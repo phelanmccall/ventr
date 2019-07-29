@@ -1,22 +1,19 @@
 import React from "react";
-
-import LoginForm from "../components/LoginForm";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 class Login extends React.Component {
   componentWillMount(){
-    API.getCurrentUser().then(response => {
-      if(response.data.id){
-        window.location.href = "/home"
-      }
-    })
+ 
   }
   render() {
     return (
-      <div>
+      <div className="conatiner-fluid">
         <Navbar />     
-        <div className="flexBox">
-          <Registration />
-          <LoginForm />
+
+        <div className="col-12 text-center">
+        <img src="https://via.placeholder.com/250x250" className="img-fluid" />
+       
         </div>
         <Footer />
       </div>

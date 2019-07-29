@@ -1,6 +1,7 @@
 const path = require("path");
 const router = require("express").Router();
 const db = require("../models");
+const passport = require("passport");
 
 
 router.use(function (req, res, next) {
@@ -33,6 +34,13 @@ router.use(function (req, res, next) {
   }
   next();
 });
+
+router
+  .route("/login")
+  .post(passport.authenticate('local'), function (req, res) {
+    res.redirect("/home");
+  });
+
  
 // If no API routes are hit, send the React app
 router.use(function (req, res) {

@@ -1,10 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import HomeNav from "../components/HomeNav";
-import TopFiveProjects from "../components/TopFiveProjects";
-import Wrapper from "../components/Wrapper";
 import Footer from "../components/Footer";
-import API from "../utils/API";
 
 class Home extends Component {
   state = {
@@ -13,19 +10,7 @@ class Home extends Component {
   };
 
   componentDidMount() {
-    API.getCurrentUser().then(response => {
-      const currentUser = response.data;
-      if (currentUser) {
-        this.setState({
-          user: currentUser
-        });
-      }
-    });
-    API.getTopFiveProjects()
-      .then(res => {
-        this.setState({ projects: res.data });
-      })
-      .catch(err => console.log(err));
+  
   }
 
   render() {
@@ -40,7 +25,6 @@ class Home extends Component {
     return (
         <div>
             <HomeNav options={this.state.user} />
-            <Wrapper>
                 <div className="jumbotron jumbotron-fluid">
                     <div className="container">
                         <img className="jumbotron-avatar" src={avatar} alt={firstName} width="150" height="150" />
@@ -51,16 +35,9 @@ class Home extends Component {
                     </div>
                     <div>
                     <h1 className="subTitle">New Posts!</h1>
-                    <div className="topFive">
-                        <ul>
-                            {Object.keys(this.state.projects).map(key => <TopFiveProjects
-                                key={key}
-                                details={this.state.projects[key]}
-                            />)}
-                        </ul>
-                    </div>
+                   
                 </div>
-            </Wrapper>
+         
             <Footer />
         </div>
     )
