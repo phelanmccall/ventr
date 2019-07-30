@@ -15,7 +15,8 @@ class Login extends React.Component {
   signup = (e) => {
     e.preventDefault();
     
-    console.log(e.target);
+    console.log(e.target.password1.value);
+      console.log(e.target.password2.value);
     
     if(e.target.password1.value && e.target.password1.value === e.target.password2.value){
       this.setState({
