@@ -18,13 +18,22 @@ class Login extends React.Component {
     console.log(e.target.password1.value);
       console.log(e.target.password2.value);
     
-    if(e.target.password1.value.length === 0 || e.target.password1.value !== e.target.password2.value){
+    if(e.target.password1.value.length === 0){
       this.setState({
-        err: "Passwords do not match."
+        err: "Password is empty."
+      });
+    }else if(e.target.password1.value !== e.target.password2.value){
+      this.setState({
+        err: "Passwords don't match."
       });
     }else{
-      this.setState({
-        err: "hey there hi there ho there"
+      axios.post("/signup", {
+        username: e.target.username.value,
+        password: e.target.password1.value
+      }).then((response)=>{
+         console.log(response.data);
+      }).catch((err)=>{
+        console.log(err);
       });
     }
   }
@@ -46,8 +55,8 @@ class Login extends React.Component {
           </div>
           <form onSubmit={this.signup} >
              <input name="email" placeholder="Email"/>
-             <input name="password1" placeholder="Password"/>
-             <input name="password2" placeholder="Password"/>
+             <input name="password1" type="password" placeholder="Password"/>
+             <input name="password2" type="password" placeholder="Password"/>
              <input type="submit" value="Sign up" />
           </form>
         </div>
