@@ -18,7 +18,7 @@ class Login extends React.Component {
     console.log(e.target.password1.value);
       console.log(e.target.password2.value);
     
-    if(e.target.password1.value && e.target.password1.value === e.target.password2.value){
+    if(e.target.password1.value.length === 0 || e.target.password1.value !== e.target.password2.value){
       this.setState({
         err: "Passwords do not match."
       });
