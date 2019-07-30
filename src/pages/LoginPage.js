@@ -40,7 +40,7 @@ class Login extends React.Component {
               this.state.err
             }
           </div>
-          <form >
+          <form onSubmit={this.signup} >
              <input name="email" placeholder="Email"/>
              <input name="password1" placeholder="Password"/>
              <input name="password2" placeholder="Password"/>
