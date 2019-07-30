@@ -1,11 +1,30 @@
 import React from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import axios from "axios";
 
 class Login extends React.Component {
+  state={
+    err: ""
+  }
+  
   componentWillMount(){
  
   }
+  
+  signup = (e) => {
+    e.preventDefault();
+    if(e.target.password1 === e.target.password2){
+      this.setState({
+        err: "Passwords do not match."
+      });
+    }else{
+      this.setState({
+        err: "hey there hi there ho there"
+      });
+    }
+  }
+  
   render() {
     return (
       <div className="conatiner-fluid">
@@ -14,6 +33,19 @@ class Login extends React.Component {
         <div className="col-12 text-center">
         <img src="https://via.placeholder.com/250x250" className="img-fluid" />
        
+        </div>
+        <div className="col-12">
+          <div id="err" className="text-danger">
+            {
+              this.state.err
+            }
+          </div>
+          <form >
+             <input name="email" placeholder="Email"/>
+             <input name="password1" placeholder="Password"/>
+             <input name="password2" placeholder="Password"/>
+             <input type="submit" value="Sign up" />
+          </form>
         </div>
         <Footer />
       </div>
