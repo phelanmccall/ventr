@@ -17,8 +17,8 @@ const Navbar = () => {
 
                 <div class="collapse navbar-collapse" id="navbarColor01">
                    <form className="ml-auto mr-0" action="/login" method="post">
-                    <input type="email" id="inputEmail" className="btn btn-light border  mr-sm-2" placeholder="Email address" required="" autofocus="" />
-                    <input type="password" id="inputPassword" className="btn btn-light border  mr-sm-2" placeholder="Password" required="" autofocus="" />
+                    <input type="email" name="email" id="inputEmail" className="btn btn-light border  mr-sm-2" placeholder="Email address" required="" autofocus="" />
+                    <input type="password" name="password" id="inputPassword" className="btn btn-light border  mr-sm-2" placeholder="Password" required="" autofocus="" />
                     <button type="submit" className="btn btn-primary my-2 my-sm-0">Submit</button>
                     </form>
                 </div>
