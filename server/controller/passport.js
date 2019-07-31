@@ -1,6 +1,6 @@
 // Passport //
 
-// const GoogleStrategy = require("passport-google-oauth20").Strategy;
+// const GoogleStrategy = require("passport-google-oUser20").Strategy;
 const passport = require("passport");
 const bcrypt = require("bcrypt-nodejs");
 const db = require("../models");
@@ -21,18 +21,18 @@ const LocalStrategy = require('passport-local').Strategy;
 //   // passport callback function
 //   function (accessToken, refreshToken, profile, done) {
 //     console.log(profile);
-//     db.Auths.findOne({
-//       where: { authModeId: profile.id }
+//     db.Users.findOne({
+//       where: { UserModeId: profile.id }
 //     }).then(function (existingUser) {
 //       if (existingUser) {
   
 //         done(null, existingUser);
 //       } else {
-//         db.Auths.create({
+//         db.Users.create({
 //           firstName: profile.displayName,
 //           avatar: profile.photos[0].value,
-//           authMode: google,
-//           authModeID: profile.id
+//           UserMode: google,
+//           UserModeID: profile.id
 //         }).then(function (user) {
 //          done(null, user);
 //         });
@@ -44,11 +44,11 @@ const LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy(
   function (username, password, done) {
-    db.Auths.findAll({})
-    .then((dbAuths)=>{
-      console.log(dbAuths)
-      if(!dbAuths.length){
-        db.Auths.create({
+    db.Users.findAll({})
+    .then((dbUsers)=>{
+      console.log(dbUsers)
+      if(!dbUsers.length){
+        db.Users.create({
           username: username,
           password: bcrypt.hashSync(password)
         }).then((user)=>{
@@ -67,7 +67,7 @@ passport.use(new LocalStrategy(
 
         })
       }else{
-        db.Auths.findOne({
+        db.Users.findOne({
           where:{
             username: username
           }
@@ -99,7 +99,7 @@ passport.use(new LocalStrategy(
 ));
 
 
-// authenticate session persistence
+// Userenticate session persistence
 passport.serializeUser(function (user, done) {
   
   done(null, user.id)
@@ -107,7 +107,7 @@ passport.serializeUser(function (user, done) {
 
 passport.deserializeUser(function (id, done) {
   console.log("deserial = " + id);
-  db.Auths.findOne({
+  db.Users.findOne({
     where: {
       id: id
     }

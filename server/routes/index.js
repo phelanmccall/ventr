@@ -40,7 +40,27 @@ router
   .post(passport.authenticate('local'), function (req, res) {
     res.redirect("/home");
   });
-
+// user routes
+router.route("/signup")
+  .post(function (req, res) {
+    db.Users.findOne({
+      where: {
+        email: req.body.email
+      }
+    }).then(dbUser => {
+      if (dbUser) {
+        res.send("email is taken");
+      } else {
+        db.Users.create({
+          avatar: "https://via.placeholder.com/150",
+          password: bcrypt.hashSync(req.body.password),
+          email: req.body.email,
+        }).then(dbUser => {
+          res.send(dbUser);
+        });
+      }
+    });
+  });
  
 // If no API routes are hit, send the React app
 router.use(function (req, res) {

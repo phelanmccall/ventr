@@ -6,8 +6,14 @@ module.exports = (sequelize, Datatypes) => {
         email: Datatypes.STRING,
         username: Datatypes.STRING,
         password: Datatypes.STRING,
-        avatar: Datatypes.STRING,
-        bio: Datatypes.STRING
+        avatar:  {
+          type: Datatypes.STRING,
+          default: "https://via.placeholder.com/150"
+        },
+        bio: {
+          type: Datatypes.STRING,
+          default: ""
+        }
       }
       
     );
