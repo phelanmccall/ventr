@@ -61,7 +61,40 @@ router.route("/signup")
       }
     });
   });
- 
+
+  router.route("/block")
+    .post(function(req, res){
+      db.Blocks.create({
+        user1: req.user.id,
+        user2: req.body.user
+      }).then((dbBlock)=>{
+        res.send(dbBlock);
+      }).catch((err)=>{
+        res.send(err);
+      })
+    })
+    
+router.route("/report")
+    .get(function(req, res){
+      db.Reports.find({
+
+      }).then((dbReports)=>{
+        res.send(dbReports);
+      }).catch((err)=>{
+        res.send(err);
+      })
+    })
+    .post(function(req, res){
+      db.Reports.create({
+        post: req.body.post,
+        reporter: req.user.id
+      }).then((dbReport)=>{
+        res.send(dbReport);
+      }).catch((err)=>{
+        res.send(err);
+      })
+    })
+    
 // If no API routes are hit, send the React app
 router.use(function (req, res) {
   if (!res.headersSent) {
