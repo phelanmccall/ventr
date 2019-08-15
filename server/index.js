@@ -2,6 +2,7 @@ require("dotenv").config();
 require("./controller/passport");
 
 const express = require("express");
+var session = require('express-session');
 const passport = require("passport")
 const bodyParser = require("body-parser");
 const cors = require("cors");
@@ -15,7 +16,12 @@ app.use(express.static("client/build"));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors());
-
+app.use(session({
+  secret: 'secrettexthere',
+  saveUninitialized: true,
+  resave: true,
+ 
+}));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -27,13 +33,13 @@ app.use(routes);
 var syncOptions = { force: false };
 
 if (process.env.NODE_ENV === "test") {
-  syncOptions.force = true;
+  syncOptions.force = false;
 }
 console.log("FORCE? " + syncOptions.force);
 db.sequelize
   .sync(syncOptions)  
   .then(function() {
     app.listen(PORT, function() {
-      console.log(`Listening on port ${PORT}`);
-    });
+      console.log(`Listening on port ${PORT}` );
+    }); 
   });

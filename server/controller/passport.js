@@ -21,14 +21,14 @@ const LocalStrategy = require('passport-local').Strategy;
 //   // passport callback function
 //   function (accessToken, refreshToken, profile, done) {
 //     console.log(profile);
-//     db.Users.findOne({
+//     db.User.findOne({
 //       where: { UserModeId: profile.id }
 //     }).then(function (existingUser) {
 //       if (existingUser) {
-  
+
 //         done(null, existingUser);
 //       } else {
-//         db.Users.create({
+//         db.User.create({
 //           firstName: profile.displayName,
 //           avatar: profile.photos[0].value,
 //           UserMode: google,
@@ -44,70 +44,40 @@ const LocalStrategy = require('passport-local').Strategy;
 
 passport.use(new LocalStrategy(
   function (username, password, done) {
-    db.Users.findAll({})
-    .then((dbUsers)=>{
-      console.log(dbUsers)
-      if(!dbUsers.length){
-        db.Users.create({
-          username: username,
-          password: bcrypt.hashSync(password)
-        }).then((user)=>{
-          if (user) {
-            if (bcrypt.compareSync(password, user.password)) {
-              return done(null, user);
-            } else {
-              done(null, false);
-            }
-          } else {
-            done(null, null);
-          }
-        }).catch((err)=>{
-          console.log(err);
-          done(null, null);
 
-        })
-      }else{
-        db.Users.findOne({
-          where:{
-            username: username
-          }
-        }).then((user)=>{
-          if (user) {
-            if (bcrypt.compareSync(password, user.password)) {
-              return done(null, user);
-            } else {
-              done(null, false);
-            }
-          } else {
-            done(null, null);
-          }
-        })
-        .catch((err)=>{
-          console.log(err);
-          done(null, null);
-
-        })
+    db.User.findOne({
+      where: {
+        email: username
       }
-
-
-      })
-      .catch(function (err) {
+    }).then((user) => {
+      if (user) {
+        if (bcrypt.compareSync(password, user.password)) {
+          return done(null, user);
+        } else {
+          done(null, false);
+        }
+      } else {
+        done(null, null);
+      }
+    })
+      .catch((err) => {
         console.log(err);
         done(null, null);
-      });
+
+      })
   }
+
 ));
 
 
 // Userenticate session persistence
 passport.serializeUser(function (user, done) {
-  
   done(null, user.id)
 });
 
 passport.deserializeUser(function (id, done) {
   console.log("deserial = " + id);
-  db.Users.findOne({
+  db.User.findOne({
     where: {
       id: id
     }

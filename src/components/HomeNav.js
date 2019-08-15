@@ -23,50 +23,38 @@ class HomeNav extends Component {
     handleSubmit = event => {
         event.preventDefault();
         window.location.href = "/search?q=" + this.state.search;
-        
+
     }
 
-    
+
     render() {
         const { avatar, firstName } = this.state.user
         return (
             <div>
-                <nav className="navbar fixed-top navbar-dark bg-dark">
-                        <Link to="/home" className="navbar-brand homeLink" ><img src="/techLogo.jpg" width="30" height="30" className="d-inline-block align-top" alt="logo" style={{ borderRadius: 7 }} /> Techbook</Link>
-                        <Link to="/favorites" className="navbar-item favoritesLink">Favorites</Link>
-                        <div className="dropdown projectsDropdown">
-                            <button className="dropBtn">Projects</button>
-                            <div className="dropdown-content">
-                                <Link to="/all-projects" className="dropLinks">All Projects</Link>
-                                <Link to="/projects" className="dropLinks">Your Projects</Link>
-                            </div>
-                        </div>
-                        <div className="search-container">
-                            <h6 className="searchBar-title"><strong>Find a Project</strong></h6>
-                            <input
-                            onChange={this.handleInputChange}
-                            value={this.state.search}
-                            name="search" 
-                            type="text" 
-                            id="character-search" 
-                            className="form-control" />
-                            <br />
-                            <div className="text-right">
-                                <button onClick={this.handleSubmit} type="submit" className="btn btn-primary btn-md" id="search-btn"><span className="fa fa-search"></span>
-                                    Search
-                            </button>
-                            </div>
-                        </div>
-                        <div className="dropdown avatarDropdown">
-                            <button className="btn btn-dark bg-dark dropdown-toggle" type="button" data-toggle="dropdown"
-                                aria-haspopup="true" aria-expanded="false"><img id="avatar" src={avatar} alt={firstName} />
-                            </button>
-                            <div className="dropdown-menu dropdown-menu-right" aria-labelledby="avatar-dropdown-menu">
-                                <a className="dropdown-item" href="/api/logout">Logout</a>
-                                <a className="dropdown-item" href="/profile">Edit Profile</a>
+                <nav id="nav" className="navbar sticky-top navbar-expand navbar-dark bg-dark">
 
-                            </div>
-                        </div>
+                <a className="navbar-brand" href="/">
+                        <img src="/ventrLogo.jpg" width="30" height="30"
+                            className="align-top" alt="~\\~"
+                            style={{ borderRadius: 7 }} />Ventr</a>
+
+
+                    <div className="collapse navbar-collapse justify-content-end">
+                        <ul className="navbar-nav">
+                            <li className="nav-item active">
+                                <a className="nav-link" href="/home" id="homeBtn">Home <span className="sr-only">(current)</span></a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/settings" id="portBtn">Settings</a>
+                            </li>
+                            <li className="nav-item">
+                                <a className="nav-link" href="/play" id="contBtn">Play</a>
+                            </li>
+                            <li>
+                                <a className="nav-link" id="signout" href="/logout">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
                 </nav>
             </div>
         );

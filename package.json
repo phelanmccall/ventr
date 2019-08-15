@@ -14,6 +14,7 @@
     "generic-pool": "^3.6.1",
     "mysql": "^2.16.0",
     "mysql2": "^1.6.5",
+    "nodemon": "^1.19.1",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "react": "^16.8.6",
@@ -23,7 +24,7 @@
     "sequelize": "^5.8.11"
   },
   "scripts": {
-    "start": "node server",
+    "start": "nodemon server",
     "dev": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

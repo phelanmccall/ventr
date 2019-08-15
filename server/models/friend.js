@@ -3,8 +3,20 @@ module.exports = (sequelize, Datatypes) => {
     const Friend = sequelize.define(
         "Friend",
         {
-            user1: Datatypes.STRING,
-            user2: Datatypes.STRING
+            user1: {
+                type: Datatypes.UUID,
+                allowNull: false,
+                primaryKey: true
+            },
+            user2: {
+                type: Datatypes.UUID,
+                allowNull: false,
+                primaryKey: true
+            },
+            status: {
+                type: Datatypes.STRING,
+                defaultValue: "pending"
+            }
         }
 
     );
