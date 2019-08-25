@@ -18,10 +18,10 @@ class Feed extends Component {
         e.preventDefault();
         console.log(e.target.dataset);
         axios.post("/like", {
-            user: e.target.dataset.user,
-            post: e.target.dataset.id
+            post: e.target.dataset.post
         }).then((response)=>{
             console.log(response.data);
+            this.getPosts();
         }).catch((err)=>{
             console.log(err);
         })
@@ -58,7 +58,7 @@ class Feed extends Component {
                                             <div className="col-12 bg-white">{value.body}</div>
                                             <small className="text-light">{"Date: " + value.createdAt}</small>
                                             <small className="text-light">{"Last edit: " +  value.updatedAt}</small>
-                                            <button data-post={value.id} data-user={value.user} className="btn btn-primary" onClick={this.likePost}>Acknowledge</button>
+                                            <button data-post={value.id}className="btn btn-primary" onClick={this.likePost}>Acknowledge</button>
                                             <small>{value.score}</small>
                                         </div>
                                     </div>

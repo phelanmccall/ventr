@@ -204,9 +204,58 @@ router.route("/posts/:id")
 router.route("/like")
   .post(function(req, res){
     console.log(req.body);
-      db.Like.create({
+      db.Like.findOne({
+       where: {
         user: req.user.username,
         post: req.body.post
+       }
+      }).then((dbLike)=>{
+        console.log(dbLike)
+        if(dbLike){
+          db.Like.destroy({
+            where: {
+              user: req.user.username,
+              post: req.body.post
+             }
+          }).then((deleted)=>{
+            db.Post.decrement(
+              "score",
+              {
+              where: {
+                id: req.body.post
+              }
+            }).then((row)=>{
+              console.log(row);
+              res.send({
+                deleted: deleted
+              });
+            })
+          }).catch((err)=>{
+            console.log(err);
+            res.send(err);
+          })
+        }else{
+          db.Like.create({
+            user: req.user.username,
+            post: req.body.post
+          }).then((dbLike2)=>{
+            console.log(dbLike2);
+            db.Post.increment("score",
+            {where:{
+              id: req.body.post
+            }}).then((rows)=>{
+              res.send({
+                affected: rows
+              });
+            })
+          }).catch((err)=>{
+            console.log(err);
+            res.send(err);
+          })
+        }
+      }).catch((err)=>{
+        console.log(err);
+        res.send(err);
       })
   })
 router.route("/everypost")
