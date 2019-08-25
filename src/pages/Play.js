@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import HomeNav from "../components/HomeNav";
 import axios from "axios";
 class Play extends Component {
 
@@ -31,6 +32,7 @@ class Play extends Component {
     render() {
         return (
             <div>
+                <HomeNav />
                 <h1>PLAY</h1>
             </div>
         );

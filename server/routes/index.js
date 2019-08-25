@@ -51,10 +51,10 @@ router.route("/user/:name")
       where: {
         username: req.params.name
       }
-    }).then((dbUser)=>{
+    }).then((dbUser) => {
       res.send(dbUser);
 
-    }).catch((err)=>{
+    }).catch((err) => {
       console.log(err);
       res.send(err);
     })
@@ -77,48 +77,35 @@ router.route("/signup")
       if (dbUser) {
         res.send("Email is taken.");
       } else {
-       db.User.findOne({
-         where: {
-           username: req.body.username
-         }
-       }).then((dbUser2)=>{
-         if(dbUser2){
-           res.send("Username is taken.");
-         }else{
-          db.User.create({
-            avatar: "https://via.placeholder.com/150x150",
-            password: bcrypt.hashSync(req.body.password),
-            username: req.body.username,
-            email: req.body.email,
-          }).then((dbUser) => {
-            console.log(dbUser);
-            res.send(dbUser);
-          }).catch((err) => {
-            console.log(err);
-            res.send(err);
-          });
-         }
-       })
+        db.User.findOne({
+          where: {
+            username: req.body.username
+          }
+        }).then((dbUser2) => {
+          if (dbUser2) {
+            res.send("Username is taken.");
+          } else {
+            db.User.create({
+              avatar: "https://via.placeholder.com/150x150",
+              password: bcrypt.hashSync(req.body.password),
+              username: req.body.username,
+              email: req.body.email,
+            }).then((dbUser) => {
+              console.log(dbUser);
+              res.send(dbUser);
+            }).catch((err) => {
+              console.log(err);
+              res.send(err);
+            });
+          }
+        })
       }
     });
   });
 
-router.route("/block")
-  .post(function (req, res) {
-    db.Block.create({
-      user1: req.user.id,
-      user2: req.body.user
-    }).then((dbBlock) => {
-      res.send(dbBlock);
-    }).catch((err) => {
-      console.log(err);
-      res.send(err);
-    })
-  })
-
 router.route("/report")
   .get(function (req, res) {
-    db.Report.find({
+    db.Report.findAll({
 
     }).then((dbReports) => {
       res.send(dbReports);
@@ -140,16 +127,16 @@ router.route("/report")
     })
   })
 
-router.route("/friends")
+router.route("/follows")
   .get(function (req, res) {
 
   })
   .post(function (req, res) {
-    db.Friend.create({
+    db.Follow.create({
       user1: req.user.id,
       user2: req.body.user
-    }).then((dbFriend) => {
-      res.send(dbFriend);
+    }).then((dbFollow) => {
+      res.send(dbFollow);
     }).catch((err) => {
       console.log(err);
 
@@ -157,14 +144,78 @@ router.route("/friends")
     })
   })
 router.route("/:user/posts")
-  .get(function(req, res){
+  .get(function (req, res) {
     db.Post.findAll({
       where: {
         user: req.params.user
       }
-    }).then((dbPosts)=>{
+    }).then((dbPosts) => {
       res.send(dbPosts);
-    }).catch((err)=>{
+    }).catch((err) => {
+      console.log(err);
+      res.send(err);
+    })
+  })
+router.route("/:user/posts/:id")
+  .get(function (req, res) {
+    db.Post.findOne({
+      where: {
+        user: req.user.username,
+        id: req.params.id
+      }
+    }).then((dbPost) => {
+      res.send(dbPost);
+    }).catch((err) => {
+      console.log(err);
+      res.send(err);
+    })
+  })
+
+router.route("/posts/:id")
+  .get(function (req, res) {
+    db.Post.findOne({
+      where: {
+        user: req.user.username,
+        id: req.params.id
+      }
+    }).then((dbPost) => {
+      res.send(dbPost);
+    }).catch((err) => {
+      console.log(err);
+      res.send(err);
+    })
+  })
+  .delete(function (req, res) {
+    db.Post.destroy({
+      where: {
+        user: [req.user.email, req.user.username],
+        id: req.params.id
+      }
+    }).then((dbPost) => {
+      console.log(dbPost);
+      res.send({
+        deleted: dbPost
+      })
+    }).catch((err) => {
+      console.log(err);
+      res.send(err);
+    })
+  })
+router.route("/like")
+  .post(function(req, res){
+    console.log(req.body);
+      db.Like.create({
+        user: req.user.username,
+        post: req.body.post
+      })
+  })
+router.route("/everypost")
+  .get(function (req, res) {
+    db.Post.findAll({
+      order: [['updatedAt', 'DESC']]
+    }).then((dbPosts) => {
+      res.send(dbPosts);
+    }).catch((err) => {
       console.log(err);
       res.send(err);
     })
@@ -172,35 +223,14 @@ router.route("/:user/posts")
 
 router.route("/posts")
   .get(function (req, res) {
-    db.Friend.findAll({
+    db.Post.findAll({
+      order: [ ['updatedAt', 'DESC'] ],
       where: {
-        status: "accepted" 
-      },
-      $or: [
-        {user1: req.user.id},
-        {user2: req.user.id}
-      ]
-    }).then((dbFriends)=>{
-      console.log(dbFriends);
-      let friendsList = dbFriends.map((val)=>{
-        if(val.user1 === req.user.id){
-          return val.user2;
-        }else{
-          return val.user1;
-        }
-      });
-      db.Post.findAll({
-        where:{
-          user: friendsList,
-          privacy: ["public", "friends"]
-        }
-      }).then((dbPosts)=>{
-        res.send(dbPosts)
-      }).catch((err)=>{
-        console.log(err);
-        res.send(err);
-      })
-    }).catch((err)=>{
+        user: [req.user.username, req.user.email]
+      }
+    }).then((dbPosts) => {
+      res.send(dbPosts);
+    }).catch((err) => {
       console.log(err);
       res.send(err);
     })
@@ -208,43 +238,31 @@ router.route("/posts")
   .post(function (req, res) {
     console.log(req.body);
     db.Post.create({
-      user: req.user.email,
-      body: req.body.post
-    }).then((dbPost)=>{
-      res.send("/home");
-    }).catch((err)=>{
+      user: req.user.username,
+      body: req.body.body,
+    }).then((dbPost) => {
+      res.send(dbPost);
+    }).catch((err) => {
       console.log(err);
       res.send(err);
     })
   })
+
 router.route("/update/password")
-  .put(function(req, res){
+  .put(function (req, res) {
     db.User.findOne({
-      where:{
+      where: {
         id: req.user.id
       }
-    }).then((dbUser)=>{
-      if(bcrypt.compareSync(req.body.oldpass, dbUser.password)){
+    }).then((dbUser) => {
+      if (bcrypt.compareSync(req.body.oldpass, dbUser.password)) {
         db.User.update({
           password: bcrypt.hashSync(req.body.newpass)
-        }) 
+        })
       }
     })
   })
-router.route("/update/privacy")
-  .put(function(req, res){
-    db.Setting.update({
-      privacy: req.body.privacy
-    },
-    {
-      where: {
-        user: req.user.username
-      }
-    }).catch((err)=>{
-      console.log(err);
-      res.send(err);
-    })
-  })
+
 
 
 // If no API routes are hit, send the React app

@@ -3,6 +3,12 @@ module.exports = (sequelize, Datatypes) => {
     const Post = sequelize.define(
         "Post",
         {
+            id: {
+                type: Datatypes.UUID,
+                defaultValue: Datatypes.UUIDV1,
+                allowNull: false,
+                primaryKey: true
+            },
             user: {
                 type: Datatypes.STRING,
                 allowNull: false
@@ -14,14 +20,6 @@ module.exports = (sequelize, Datatypes) => {
             score: {
                 type: Datatypes.INTEGER,
                 defaultValue: 0
-            },
-            privacy: {
-                type: Datatypes.STRING,
-                defaultValue: "public"
-            },
-            reported: {
-                type: Datatypes.BOOLEAN,
-                defaultValue: false
             },
             createdAt: {
                 type: Datatypes.DATE,

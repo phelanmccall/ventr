@@ -11,24 +11,52 @@ class Home extends Component {
     };
 
     componentDidMount() {
+      this.setup();
+      this.getPosts();
+
+    }
+
+    setup = () =>{
         axios.get("/user").then((response) => {
             console.log(response.data);
             this.setState({
                 user: response.data
-            }, () => {
-                axios.get("/posts").then((response) => {
-                    console.log(response.data);
-                    this.setState({
-                        posts: response.data
-                    })
-                }).catch((err) => {
-                    console.log(err);
-                })
             });
         }).catch((err) => {
             console.log(err);
-        })
+        });
+    }
 
+    getPosts = () =>{
+        axios.get("/posts").then((response) => {
+            console.log(response.data);
+            this.setState({
+                posts: response.data
+            })
+        }).catch((err) => {
+            console.log(err);
+        })
+    }
+
+    submitPost = (e) =>{
+        e.preventDefault();
+
+        axios.post("/posts",{
+            body: e.target.post.value
+        }).then((response)=>{
+            document.getElementById("proclaim").reset();
+            this.getPosts();
+        })
+    }
+
+    deletePost = (e) => {
+        e.preventDefault();
+        axios.delete(`/posts/${e.target.id}`).then((response)=>{
+            console.log(response.data);
+            this.getPosts();
+        }).catch((err)=>{
+            console.log(err);
+        })
     }
 
     render() {
@@ -42,19 +70,15 @@ class Home extends Component {
         console.log(this.state.user);
         return (
             <div>
-                <HomeNav options={this.state.user} />
+                <HomeNav />
                 <div className="row m-1">
                     <h1 className="col-7 m-auto text-warning bg-info p-5">Welcome {this.state.user.username}</h1>
                     <div className="col-7 post card m-auto text-light bg-dark p-5">
-                        <form action="/posts" method="post">
+                        <form id="proclaim" onSubmit={this.submitPost}>
                             <label for="post">Proclaim:</label>
                             <textarea type="text" name="post"></textarea>
-                            <input id="proclaim" type="submit" />
-                            <select name="privacy">
-                                <option value="public">Public</option>
-                                <option value="friends">Friends only</option>
-                                <option value="private">Private</option>
-                            </select>
+                            <input type="submit" />
+                          
                         </form>
                     </div>
                 </div>
@@ -68,10 +92,13 @@ class Home extends Component {
                                 return (
                                     <div className="row m-1">
                                         <div className="col-7 post card m-auto bg-dark p-5">
-                                            <h2 className="bg-secondary text-white p-1 m-1">{this.state.user.username}</h2>
 
                                             <div className="col-12 bg-white">{value.body}</div>
-                                            <small className="text-light">{value.createdAt}</small>
+                                            <small className="text-light">{"Date: " + value.createdAt}</small>
+                                            <small className="text-light">{"Last edit: " +  value.updatedAt}</small>
+                                            <button className="btn btn-danger" id={value.id} onClick={this.deletePost}>Delete</button>
+                                            <button className="btn btn-info" id={value.id} >Edit</button>
+
                                         </div>
                                     </div>
 
@@ -81,8 +108,6 @@ class Home extends Component {
 
                             <div className="row m-1">
                                 <div className="col-7 post card m-auto bg-dark p-5">
-                                    <h2 className="bg-secondary text-white p-1 m-1">{this.state.user.username}</h2>
-
                                     <div className="col-12 bg-white ">Make some posts!</div>
                                 </div>
                             </div>

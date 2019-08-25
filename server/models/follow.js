@@ -1,7 +1,7 @@
 module.exports = (sequelize, Datatypes) => {
 
-    const Friend = sequelize.define(
-        "Friend",
+    const Follow = sequelize.define(
+        "Follow",
         {
             user1: {
                 type: Datatypes.UUID,
@@ -13,17 +13,14 @@ module.exports = (sequelize, Datatypes) => {
                 allowNull: false,
                 primaryKey: true
             },
-            status: {
-                type: Datatypes.STRING,
-                defaultValue: "pending"
-            }
+           
         }
 
     );
-    //   Friend.associate = models => {
-    //     models.Friend.hasOne(models.User);
+    //   Follow.associate = models => {
+    //     models.Follow.hasOne(models.User);
     //   };
 
 
-    return Friend;
+    return Follow;
 };
