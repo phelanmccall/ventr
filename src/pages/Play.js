@@ -1,39 +1,43 @@
 import React, { Component } from "react";
 import HomeNav from "../components/HomeNav";
 import axios from "axios";
+
 class Play extends Component {
 
-    changePrivacy = (e) =>{
-        e.preventDefault();
-        axios.put("/update/privacy",
-        {
-            privacy: e.target.privacy.value
-        }).then((response)=>{
+    state ={}
+
+    constructor(props){
+        super(props);
+        axios.get("/char").then((response)=>{
             console.log(response.data);
+            this.setState({
+                char: response.data
+            });
         }).catch((err)=>{
             console.log(err);
+            this.setState({
+                err: err
+            })
         })
     }
+    
 
-    changePassword = (e) =>{
-        e.preventDefault();
-        axios.put("/update/password",
-        {
-            oldpass: e.target.oldpass.value,
-            newpass: e.target.newpass.value
-        }).then((response)=>{
-            console.log(response.data);
-
-        }).catch((err)=>{
-            console.log(err);
-        })
+    componentDidMount() {
+        
     }
 
     render() {
         return (
             <div>
                 <HomeNav />
-                <h1>PLAY</h1>
+
+                <div className="container" id="game">
+                    <div id="battleground" style={this.state.battleground}>
+
+                    </div>
+                </div>
+
+
             </div>
         );
     }

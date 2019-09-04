@@ -19,10 +19,6 @@ module.exports = (sequelize, Datatypes) => {
           primaryKey: true
         },
         password: Datatypes.STRING,
-        avatar:  {
-          type: Datatypes.STRING,
-          default: "https://via.placeholder.com/150"
-        },
         bio: {
           type: Datatypes.STRING,
           default: ""

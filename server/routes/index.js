@@ -44,6 +44,39 @@ router.route("/user")
   .get(function (req, res) {
     res.send(req.user);
   })
+router.route("/char")
+  .get(function(req, res) {
+    db.Char.findOne({
+      where: {
+        name: req.user.username
+      }
+    }).then((dbChar)=>{
+      console.log(dbChar);
+      res.send(dbChar);
+    }).catch((err)=>{
+      console.log(err);
+      res.send(err);
+    })
+  })
+  .post(function(req, res) {
+    console.log(req.body);
+    let {str, def, agi, wis, luk, avatar} = req.body;
+    let check = str + def + agi + wis + luk > 35;
+    if(check){
+      res.send("UH OH SPAGHETTI-O");
+    }else{
+      db.Char.create({
+        name: req.user.username,
+        str,
+        def,
+        agi,
+        wis,
+        luk,
+        avatar
+      })
+    }
+    
+  })
 
 router.route("/user/:name")
   .get(function (req, res) {
@@ -59,12 +92,14 @@ router.route("/user/:name")
       res.send(err);
     })
   })
+
 router
   .route("/login")
   .post(passport.authenticate('local'), function (req, res) {
     console.log(req.user);
     res.send(req.user);
   });
+
 // user routes
 router.route("/signup")
   .post(function (req, res) {
@@ -143,6 +178,7 @@ router.route("/follows")
       res.send(err);
     })
   })
+
 router.route("/:user/posts")
   .get(function (req, res) {
     db.Post.findAll({
@@ -156,6 +192,7 @@ router.route("/:user/posts")
       res.send(err);
     })
   })
+
 router.route("/:user/posts/:id")
   .get(function (req, res) {
     db.Post.findOne({
@@ -201,6 +238,7 @@ router.route("/posts/:id")
       res.send(err);
     })
   })
+
 router.route("/like")
   .post(function(req, res){
     console.log(req.body);
@@ -258,10 +296,11 @@ router.route("/like")
         res.send(err);
       })
   })
+
 router.route("/everypost")
   .get(function (req, res) {
     db.Post.findAll({
-      order: [['updatedAt', 'DESC']]
+      order: [['createdAt', 'DESC']]
     }).then((dbPosts) => {
       res.send(dbPosts);
     }).catch((err) => {
@@ -269,11 +308,12 @@ router.route("/everypost")
       res.send(err);
     })
   })
+  
 
 router.route("/posts")
   .get(function (req, res) {
     db.Post.findAll({
-      order: [ ['updatedAt', 'DESC'] ],
+      order: [ ['createdAt', 'DESC'] ],
       where: {
         user: [req.user.username, req.user.email]
       }

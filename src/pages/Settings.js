@@ -3,11 +3,11 @@ import HomeNav from "../components/HomeNav";
 import axios from "axios";
 class Settings extends Component {
 
-    changePrivacy = (e) => {
+    changeBio = (e) => {
         e.preventDefault();
-        axios.put("/update/privacy",
+        axios.put("/update/bio",
             {
-                privacy: e.target.privacy.value
+                bio: e.target.bio.value
             }).then((response) => {
                 console.log(response.data);
             }).catch((err) => {
@@ -35,14 +35,10 @@ class Settings extends Component {
                 <HomeNav />
                 <div className="container mt-5">
 
-                    <form onSubmit={this.changePrivacy} >
+                    <form onSubmit={this.changeBio} >
                         <div className="form-group">
-                            <label for="privacy">Privacy</label>
-                            <select>
-                                <option value="Private">Private</option>
-                                <option value="Friends Only">Friends Only</option>
-                                <option value="Public">Public</option>
-                            </select>
+                            <label for="privacy">Bio</label>
+                            <input type="text" name="bio"></input>
                         </div>
                         <div className="form-group">
                             <input className="btn btn-primary" type="submit" value="Update" />
