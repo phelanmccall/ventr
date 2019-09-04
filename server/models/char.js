@@ -3,6 +3,10 @@ module.exports = (sequelize, Datatypes) => {
     const Char = sequelize.define(
         "Char",
         {
+            name: {
+                type: Datatypes.STRING,
+                allowNull: false
+            },
             avatar:  {
                 type: Datatypes.STRING,
                 default: "https://via.placeholder.com/150"
