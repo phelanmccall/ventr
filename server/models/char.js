@@ -5,12 +5,17 @@ module.exports = (sequelize, Datatypes) => {
         {
             name: {
                 type: Datatypes.STRING,
-                allowNull: false
+                allowNull: false,
+                primaryKey: true
             },
             avatar:  {
                 type: Datatypes.STRING,
                 default: "https://via.placeholder.com/150"
               },
+            level: {
+                type: Datatypes.INT,
+                default: 1
+            },
             str: {
                 type: Datatypes.INT,
                 default: 5
@@ -30,7 +35,28 @@ module.exports = (sequelize, Datatypes) => {
             luk: {
                 type: Datatypes.INT,
                 default: 5
+            },
+            equippedHead: {
+                type: Datatypes.STRING,
+                default: ""
+            },
+            equippedTorso: {
+                type: Datatypes.STRING,
+                default: ""
+            },
+            equippedLHand: {
+                type: Datatypes.STRING,
+                default: ""
+            },
+            equippedRHand: {
+                type: Datatypes.STRING,
+                default: ""
+            },
+            equippedFoot: {
+                type: Datatypes.STRING,
+                default: ""
             }
+           
         }
 
     );
